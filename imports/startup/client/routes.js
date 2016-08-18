@@ -11,7 +11,7 @@ import '../../ui/pages/app-not-found.js';
 // Import to override accounts templates
 import '../../ui/accounts/accounts-templates.js';
 
-FlowRouter.route('/days/:_id', {
+FlowRouter.route('/days/:date', {
   name: 'Days.show',
   action() {
     BlazeLayout.render('App_body', { main: 'Days_show_page' });

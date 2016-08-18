@@ -7,9 +7,7 @@ import { Days } from '../days/days.js';
 
 class InputsCollection extends Mongo.Collection {
   insert(doc, callback) {
-    const ourDoc = doc;
-    ourDoc.createdAt = ourDoc.createdAt || new Date();
-    const result = super.insert(ourDoc, callback);
+    const result = super.insert(doc, callback);
     return result;
   }
   update(selector, modifier) {
@@ -37,23 +35,14 @@ Inputs.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
-  dayId: {
+  date: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
-    denyUpdate: true,
   },
   text: {
     type: String,
     max: 100,
-  },
-  createdAt: {
-    type: Date,
-    denyUpdate: true,
-  },
-  checked: {
-    type: Boolean,
-    defaultValue: false,
-  },
+  }
+
 });
 
 Inputs.attachSchema(Inputs.schema);
@@ -62,26 +51,14 @@ Inputs.attachSchema(Inputs.schema);
 // to the client. If we add secret properties to Day objects, don't day
 // them here to keep them private to the server.
 Inputs.publicFields = {
-  dayId: 1,
+  date: 1,
   text: 1,
-  createdAt: 1,
-  checked: 1,
 };
 
 // INPUT This factory has a name - do we have a code style for this?
 //   - usually I've used the singular, sometimes you have more than one though, like
 //   'input', 'emptyInput', 'checkedInput'
 Factory.define('input', Inputs, {
-  dayId: () => Factory.get('day'),
+  date: () => new Date().toJSON().slice(0,10),
   text: () => faker.lorem.sentence(),
-  createdAt: () => new Date(),
-});
-
-Inputs.helpers({
-  day() {
-    return Days.findOne(this.dayId);
-  },
-  editableBy(userId) {
-    return this.day().editableBy(userId);
-  },
 });

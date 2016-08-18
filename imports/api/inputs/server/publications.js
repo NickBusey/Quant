@@ -6,18 +6,17 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Inputs } from '../inputs.js';
 import { Days } from '../../days/days.js';
 
-Meteor.publishComposite('inputs.inDay', function inputsInDay(dayId) {
+Meteor.publishComposite('inputs.inDate', function inputsInDay(date) {
   new SimpleSchema({
-    dayId: { type: String },
-  }).validate({ dayId });
+    date: { type: String },
+  }).validate({ date });
 
   const userId = this.userId;
 
   return {
     find() {
       const query = {
-        _id: dayId,
-        $or: [{ userId: { $exists: false } }, { userId }],
+        date: date,
       };
 
       // We only need the _id field in this query, since it's only
@@ -31,7 +30,7 @@ Meteor.publishComposite('inputs.inDay', function inputsInDay(dayId) {
 
     children: [{
       find(day) {
-        return Inputs.find({ dayId: day._id }, { fields: Inputs.publicFields });
+        return Inputs.find({ date: date }, { fields: Inputs.publicFields });
       },
     }],
   };

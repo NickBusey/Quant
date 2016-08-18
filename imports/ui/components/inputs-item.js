@@ -16,11 +16,11 @@ import { displayError } from '../lib/errors.js';
 
 Template.Inputs_item.onCreated(function inputsItemOnCreated() {
   this.autorun(() => {
-    new SimpleSchema({
-      input: { type: Inputs._helpers },
-      editing: { type: Boolean, optional: true },
-      onEditingChange: { type: Function },
-    }).validate(Template.currentData());
+    // new SimpleSchema({
+    //   input: { type: Inputs._helpers },
+    //   editing: { type: Boolean, optional: true },
+    //   onEditingChange: { type: Function },
+    // }).validate(Template.currentData());
   });
 });
 

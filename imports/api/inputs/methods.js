@@ -9,48 +9,14 @@ import { Days } from '../days/days.js';
 
 export const insert = new ValidatedMethod({
   name: 'inputs.insert',
-  validate: Inputs.simpleSchema().pick(['dayId', 'text']).validator({ clean: true, filter: false }),
-  run({ dayId, text }) {
-    const day = Days.findOne(dayId);
-
-    if (day.isPrivate() && day.userId !== this.userId) {
-      throw new Meteor.Error('inputs.insert.accessDenied',
-        'Cannot add inputs to a private day that is not yours');
-    }
-
+  validate: Inputs.simpleSchema().pick(['text']).validator({ clean: true, filter: false }),
+  run({ text }) {
     const input = {
-      dayId,
       text,
-      checked: false,
-      createdAt: new Date(),
+      date: new Date().toJSON().slice(0,10),
     };
 
     Inputs.insert(input);
-  },
-});
-
-export const setCheckedStatus = new ValidatedMethod({
-  name: 'inputs.makeChecked',
-  validate: new SimpleSchema({
-    inputId: Inputs.simpleSchema().schema('_id'),
-    newCheckedStatus: Inputs.simpleSchema().schema('checked'),
-  }).validator({ clean: true, filter: false }),
-  run({ inputId, newCheckedStatus }) {
-    const input = Inputs.findOne(inputId);
-
-    if (input.checked === newCheckedStatus) {
-      // The status is already what we want, let's not do any extra work
-      return;
-    }
-
-    if (!input.editableBy(this.userId)) {
-      throw new Meteor.Error('inputs.setCheckedStatus.accessDenied',
-        'Cannot edit checked status in a private day that is not yours');
-    }
-
-    Inputs.update(inputId, { $set: {
-      checked: newCheckedStatus,
-    } });
   },
 });
 
@@ -96,7 +62,6 @@ export const remove = new ValidatedMethod({
 // Get day of all method names on Inputs
 const INPUTS_METHODS = _.pluck([
   insert,
-  setCheckedStatus,
   updateText,
   remove,
 ], 'name');

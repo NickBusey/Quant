@@ -1,9 +1,3 @@
 <template name="Days_show_page">
-  {{#if dayIdArray}}
-    {{#each dayId in dayIdArray}}
-      {{> Days_show (dayArgs dayId)}}
-    {{/each}}
-  {{else}}
-    {{> App_notFound}}
-  {{/if}}
+{{> Days_show (listArgs dayId)}}
 </template>

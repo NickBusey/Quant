@@ -27,85 +27,13 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-Template.Days_show.onCreated(function dayShowOnCreated() {
-  this.autorun(() => {
-    new SimpleSchema({
-      day: { type: Function },
-      inputsReady: { type: Boolean },
-      inputs: { type: Mongo.Cursor },
-    }).validate(Template.currentData());
-  });
-
-  this.state = new ReactiveDict();
-  this.state.setDefault({
-    editing: false,
-    editingInput: false,
-  });
-
-  this.saveDay = () => {
-    this.state.set('editing', false);
-
-    const newName = this.$('[name=name]').val().trim();
-    if (newName) {
-      updateName.call({
-        dayId: this.data.day()._id,
-        newName,
-      }, displayError);
-    }
-  };
-
-  this.editDay = () => {
-    this.state.set('editing', true);
-
-    // force the template to redraw based on the reactive change
-    Tracker.flush();
-    // We need to wait for the fade in animation to complete to reliably focus the input
-    Meteor.setTimeout(() => {
-      this.$('.js-edit-form input[type=text]').focus();
-    }, 400);
-  };
-
-  this.deleteDay = () => {
-    const day = this.data.day();
-    const message = `${TAPi18n.__('Are you sure you want to delete the day')} ${day.name}?`;
-
-    if (confirm(message)) { // eslint-disable-line no-alert
-      remove.call({
-        dayId: day._id,
-      }, displayError);
-
-      FlowRouter.go('App.home');
-      return true;
-    }
-
-    return false;
-  };
-
-  this.toggleDayPrivacy = () => {
-    const day = this.data.day();
-    if (day.userId) {
-      makePublic.call({ dayId: day._id }, displayError);
-    } else {
-      makePrivate.call({ dayId: day._id }, displayError);
-    }
-  };
-});
-
 Template.Days_show.helpers({
   inputArgs(input) {
     const instance = Template.instance();
     return {
       input,
-      editing: instance.state.equals('editingInput', input._id),
-      onEditingChange(editing) {
-        instance.state.set('editingInput', editing ? input._id : false);
-      },
     };
-  },
-  editing() {
-    const instance = Template.instance();
-    return instance.state.get('editing');
-  },
+  }
 });
 
 Template.Days_show.events({
@@ -179,7 +107,7 @@ Template.Days_show.events({
     }
 
     insert.call({
-      dayId: this.day()._id,
+      date: this.date,
       text: $input.val(),
     }, displayError);
 

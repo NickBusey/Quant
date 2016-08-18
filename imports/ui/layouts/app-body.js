@@ -32,23 +32,6 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('days');
-  var today = Days.find({
-    date:new Date().toJSON().slice(0,10)
-  });
-  if (!today.count()) {
-    const dayId = insert.call((err) => {
-      if (err) {
-        // At this point, we have already redirected to the new day page, but
-        // for some reason the day didn't get created. This should almost never
-        // happen, but it's good to handle it anyway.
-        FlowRouter.go('App.home');
-        alert(TAPi18n.__('Could not create day.')); // eslint-disable-line no-alert
-      }
-    });
-
-    FlowRouter.go('Days.show', { _id: dayId });
-  }
   this.state = new ReactiveDict();
   this.state.setDefault({
     menuOpen: false,
@@ -77,6 +60,19 @@ Template.App_body.helpers({
       { userId: { $exists: false } },
       { userId: Meteor.userId() },
     ] });
+  },
+  date() {
+    return new Date().toJSON().slice(0,10);
+  },
+  date1() {
+    var date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date.toJSON().slice(0,10);
+  },
+  date2() {
+    var date = new Date();
+    date.setDate(date.getDate() - 2);
+    return date.toJSON().slice(0,10);
   },
   activeDayClass(day) {
     const active = ActiveRoute.name('Days.show')
@@ -132,19 +128,5 @@ Template.App_body.events({
         FlowRouter.go('Days.show', Days.findOne({ userId: { $exists: false } }));
       }
     }
-  },
-
-  'click .js-new-day'() {
-    const dayId = insert.call((err) => {
-      if (err) {
-        // At this point, we have already redirected to the new day page, but
-        // for some reason the day didn't get created. This should almost never
-        // happen, but it's good to handle it anyway.
-        FlowRouter.go('App.home');
-        alert(TAPi18n.__('Could not create day.')); // eslint-disable-line no-alert
-      }
-    });
-
-    FlowRouter.go('Days.show', { _id: dayId });
-  },
+  }
 });

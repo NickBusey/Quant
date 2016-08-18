@@ -25,17 +25,30 @@
         {{/if}}
 
         <div class="day-inputs">
-          <a class="js-new-day link-day-new">
-            <span class="icon-plus"></span>
-            {{_ "New Day"}}
-          </a>
-
-          {{#each day in days}}
-            <a href="{{pathFor 'Days.show' _id=day._id}}" title="{{day.date}}"
+            <a href="{{pathFor 'Days.show' date=date}}" title="{{date}}"
                 class="day-input {{activeDayClass day}}">
-              {{day.date}}
+                {{date}}
             </a>
-          {{/each}}
+            <a href="{{pathFor 'Days.show' date=date1}}" title="{{date1}}"
+                class="day-input {{activeDayClass day}}">
+                {{date1}}
+            </a>
+            <a href="{{pathFor 'Days.show' date=date2}}" title="{{date2}}"
+                class="day-input {{activeDayClass day}}">
+                {{date2}}
+            </a>
+            <a href="{{pathFor 'Days.show' date=date3}}" title="{{date1}}"
+                class="day-input {{activeDayClass day}}">
+                {{date3}}
+            </a>
+            <a href="{{pathFor 'Days.show' date=date4}}" title="{{date1}}"
+                class="day-input {{activeDayClass day}}">
+                {{date4}}
+            </a>
+            <a href="{{pathFor 'Days.show' date=date5}}" title="{{date1}}"
+                class="day-input {{activeDayClass day}}">
+                {{date5}}
+            </a>
         </div>
       </section>
 

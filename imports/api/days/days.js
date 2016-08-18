@@ -7,7 +7,6 @@ import { Inputs } from '../inputs/inputs.js';
 class DaysCollection extends Mongo.Collection {
   insert(day, callback) {
     const ourDay = day;
-    ourDay.date = new Date().toJSON().slice(0,10);
     ourDay.createdAt = ourDay.createdAt || new Date();
     ourDay.userId = Meteor.userId();
 
