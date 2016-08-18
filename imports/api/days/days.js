@@ -6,7 +6,9 @@ import { Todos } from '../todos/todos.js';
 class DaysCollection extends Mongo.Collection {
   insert(day, callback) {
     const ourDay = day;
-    ourDay.name = `Day 1`;
+    ourDay.date = new Date().toJSON().slice(0,10);
+    ourDay.createdAt = ourDay.createdAt || new Date();
+    ourDay.userId = Meteor.userId();
 
     return super.insert(ourDay, callback);
   }
@@ -27,8 +29,14 @@ Days.deny({
 
 Days.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
-  name: { type: String },
-  incompleteCount: { type: Number, defaultValue: 0 },
+  date: { 
+    type: String,
+    unique: true,
+  },
+  createdAt: {
+    type: Date,
+    denyUpdate: true,
+  },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 });
 
@@ -38,8 +46,7 @@ Days.attachSchema(Days.schema);
 // to the client. If we add secret properties to Day objects, don't day
 // them here to keep them private to the server.
 Days.publicFields = {
-  name: 1,
-  incompleteCount: 1,
+  date: 1,
   userId: 1,
 };
 

@@ -32,9 +32,8 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('days.public');
-  this.subscribe('days.private');
-
+  this.subscribe('days');
+  
   this.state = new ReactiveDict();
   this.state.setDefault({
     menuOpen: false,

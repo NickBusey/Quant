@@ -18,57 +18,10 @@ export const insert = new ValidatedMethod({
   },
 });
 
-export const makePrivate = new ValidatedMethod({
-  name: 'days.makePrivate',
-  validate: DAY_ID_ONLY,
-  run({ dayId }) {
-    if (!this.userId) {
-      throw new Meteor.Error('days.makePrivate.notLoggedIn',
-        'Must be logged in to make private days.');
-    }
-
-    const day = Days.findOne(dayId);
-
-    if (day.isLastPublicDay()) {
-      throw new Meteor.Error('days.makePrivate.lastPublicDay',
-        'Cannot make the last public day private.');
-    }
-
-    Days.update(dayId, {
-      $set: { userId: this.userId },
-    });
-  },
-});
-
-export const makePublic = new ValidatedMethod({
-  name: 'days.makePublic',
-  validate: DAY_ID_ONLY,
-  run({ dayId }) {
-    if (!this.userId) {
-      throw new Meteor.Error('days.makePublic.notLoggedIn',
-        'Must be logged in.');
-    }
-
-    const day = Days.findOne(dayId);
-
-    if (!day.editableBy(this.userId)) {
-      throw new Meteor.Error('days.makePublic.accessDenied',
-        'You don\'t have permission to edit this day.');
-    }
-
-    // XXX the security check above is not atomic, so in theory a race condition could
-    // result in exposing private data
-    Days.update(dayId, {
-      $unset: { userId: true },
-    });
-  },
-});
-
 export const updateName = new ValidatedMethod({
   name: 'days.updateName',
   validate: new SimpleSchema({
     dayId: Days.simpleSchema().schema('_id'),
-    newName: Days.simpleSchema().schema('name'),
   }).validator({ clean: true, filter: false }),
   run({ dayId, newName }) {
     const day = Days.findOne(dayId);
@@ -113,8 +66,6 @@ export const remove = new ValidatedMethod({
 // Get day of all method names on Days
 const DAYS_METHODS = _.pluck([
   insert,
-  makePublic,
-  makePrivate,
   updateName,
   remove,
 ], 'name');

@@ -2,7 +2,6 @@ import { Mongo } from 'meteor/mongo';
 import { Factory } from 'meteor/factory';
 import faker from 'faker';
 
-import incompleteCountDenormalizer from './incompleteCountDenormalizer.js';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Days } from '../days/days.js';
 
@@ -11,18 +10,15 @@ class TodosCollection extends Mongo.Collection {
     const ourDoc = doc;
     ourDoc.createdAt = ourDoc.createdAt || new Date();
     const result = super.insert(ourDoc, callback);
-    incompleteCountDenormalizer.afterInsertTodo(ourDoc);
     return result;
   }
   update(selector, modifier) {
     const result = super.update(selector, modifier);
-    incompleteCountDenormalizer.afterUpdateTodo(selector, modifier);
     return result;
   }
   remove(selector) {
     const todos = this.find(selector).fetch();
     const result = super.remove(selector);
-    incompleteCountDenormalizer.afterRemoveTodos(todos);
     return result;
   }
 }

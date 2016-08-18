@@ -10,7 +10,7 @@ Meteor.publish('days', function() {
   }
 
   return Days.find({
-    // userId: this.userId,
+    userId: this.userId,
   }, {
     fields: Days.publicFields,
   });
