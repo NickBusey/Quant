@@ -11,9 +11,11 @@ export const insert = new ValidatedMethod({
   name: 'inputs.insert',
   validate: Inputs.simpleSchema().pick(['text','date']).validator({ clean: true, filter: false }),
   run({ text, date }) {
+    console.log(Meteor.userId());
     const input = {
       text,
-      date
+      date,
+      userId: Meteor.userId()
     };
 
     Inputs.insert(input);

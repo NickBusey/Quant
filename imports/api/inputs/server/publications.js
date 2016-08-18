@@ -17,6 +17,7 @@ Meteor.publishComposite('inputs.inDate', function inputsInDay(date) {
     find() {
       const query = {
         date: date,
+        userId: userId
       };
 
       // We only need the _id field in this query, since it's only

@@ -41,8 +41,8 @@ Inputs.schema = new SimpleSchema({
   text: {
     type: String,
     max: 100,
-  }
-
+  },
+  userId: { type: String, regEx: SimpleSchema.RegEx.Id },
 });
 
 Inputs.attachSchema(Inputs.schema);
