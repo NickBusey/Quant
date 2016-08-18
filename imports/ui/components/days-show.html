@@ -52,17 +52,17 @@
         {{/if}}
       {{/momentum}}
 
-      <form class="js-todo-new todo-new input-symbol">
+      <form class="js-input-new input-new input-symbol">
         <input type="text" placeholder={{_ 'Type to add new tasks'}}>
-        <span class="icon-add js-todo-add"></span>
+        <span class="icon-add js-input-add"></span>
       </form>
     </nav>
 
 
     <div class="content-scrollable day-items">
-      {{#if todosReady}}
-        {{#each todo in todos}}
-          {{> Todos_item (todoArgs todo)}}
+      {{#if inputsReady}}
+        {{#each input in inputs}}
+          {{> Inputs_item (inputArgs input)}}
         {{else}}
           <div class="wrapper-message">
             <div class="title-message">{{_ 'No tasks here'}}</div>

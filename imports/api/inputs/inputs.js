@@ -5,7 +5,7 @@ import faker from 'faker';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Days } from '../days/days.js';
 
-class TodosCollection extends Mongo.Collection {
+class InputsCollection extends Mongo.Collection {
   insert(doc, callback) {
     const ourDoc = doc;
     ourDoc.createdAt = ourDoc.createdAt || new Date();
@@ -17,22 +17,22 @@ class TodosCollection extends Mongo.Collection {
     return result;
   }
   remove(selector) {
-    const todos = this.find(selector).fetch();
+    const inputs = this.find(selector).fetch();
     const result = super.remove(selector);
     return result;
   }
 }
 
-export const Todos = new TodosCollection('Todos');
+export const Inputs = new InputsCollection('Inputs');
 
 // Deny all client-side updates since we will be using methods to manage this collection
-Todos.deny({
+Inputs.deny({
   insert() { return true; },
   update() { return true; },
   remove() { return true; },
 });
 
-Todos.schema = new SimpleSchema({
+Inputs.schema = new SimpleSchema({
   _id: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
@@ -56,28 +56,28 @@ Todos.schema = new SimpleSchema({
   },
 });
 
-Todos.attachSchema(Todos.schema);
+Inputs.attachSchema(Inputs.schema);
 
 // This represents the keys from Days objects that should be published
 // to the client. If we add secret properties to Day objects, don't day
 // them here to keep them private to the server.
-Todos.publicFields = {
+Inputs.publicFields = {
   dayId: 1,
   text: 1,
   createdAt: 1,
   checked: 1,
 };
 
-// TODO This factory has a name - do we have a code style for this?
+// INPUT This factory has a name - do we have a code style for this?
 //   - usually I've used the singular, sometimes you have more than one though, like
-//   'todo', 'emptyTodo', 'checkedTodo'
-Factory.define('todo', Todos, {
+//   'input', 'emptyInput', 'checkedInput'
+Factory.define('input', Inputs, {
   dayId: () => Factory.get('day'),
   text: () => faker.lorem.sentence(),
   createdAt: () => new Date(),
 });
 
-Todos.helpers({
+Inputs.helpers({
   day() {
     return Days.findOne(this.dayId);
   },

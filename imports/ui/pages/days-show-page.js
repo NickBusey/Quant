@@ -14,7 +14,7 @@ Template.Days_show_page.onCreated(function daysShowPageOnCreated() {
   this.getDayId = () => FlowRouter.getParam('_id');
 
   this.autorun(() => {
-    this.subscribe('todos.inDay', this.getDayId());
+    this.subscribe('inputs.inDay', this.getDayId());
   });
 });
 
@@ -38,20 +38,20 @@ Template.Days_show_page.helpers({
   dayArgs(dayId) {
     const instance = Template.instance();
     // By finding the day with only the `_id` field set, we don't create a dependency on the
-    // `day.incompleteCount`, and avoid re-rendering the todos when it changes
+    // `day.incompleteCount`, and avoid re-rendering the inputs when it changes
     const day = Days.findOne(dayId, { fields: { _id: true } });
-    const todos = day && day.todos();
+    const inputs = day && day.inputs();
     return {
-      todosReady: instance.subscriptionsReady(),
+      inputsReady: instance.subscriptionsReady(),
       // We pass `day` (which contains the full day, with all fields, as a function
-      // because we want to control reactivity. When you check a todo item, the
+      // because we want to control reactivity. When you check a input item, the
       // `day.incompleteCount` changes. If we didn't do this the entire day would
       // re-render whenever you checked an item. By isolating the reactiviy on the day
       // to the area that cares about it, we stop it from happening.
       day() {
         return Days.findOne(dayId);
       },
-      todos,
+      inputs,
     };
   },
 });

@@ -33,7 +33,22 @@ Meteor.startup(() => {
 
 Template.App_body.onCreated(function appBodyOnCreated() {
   this.subscribe('days');
-  
+  var today = Days.find({
+    date:new Date().toJSON().slice(0,10)
+  });
+  if (!today.count()) {
+    const dayId = insert.call((err) => {
+      if (err) {
+        // At this point, we have already redirected to the new day page, but
+        // for some reason the day didn't get created. This should almost never
+        // happen, but it's good to handle it anyway.
+        FlowRouter.go('App.home');
+        alert(TAPi18n.__('Could not create day.')); // eslint-disable-line no-alert
+      }
+    });
+
+    FlowRouter.go('Days.show', { _id: dayId });
+  }
   this.state = new ReactiveDict();
   this.state.setDefault({
     menuOpen: false,
@@ -111,7 +126,7 @@ Template.App_body.events({
 
     // if we are on a private day, we'll need to go to a public one
     if (ActiveRoute.name('Days.show')) {
-      // TODO -- test this code path
+      // INPUT -- test this code path
       const day = Days.findOne(FlowRouter.getParam('_id'));
       if (day.userId) {
         FlowRouter.go('Days.show', Days.findOne({ userId: { $exists: false } }));

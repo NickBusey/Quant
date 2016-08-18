@@ -1,7 +1,8 @@
 import { Mongo } from 'meteor/mongo';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { Factory } from 'meteor/factory';
-import { Todos } from '../todos/todos.js';
+import { Inputs } from '../inputs/inputs.js';
+
 
 class DaysCollection extends Mongo.Collection {
   insert(day, callback) {
@@ -13,7 +14,7 @@ class DaysCollection extends Mongo.Collection {
     return super.insert(ourDay, callback);
   }
   remove(selector, callback) {
-    Todos.remove({ dayId: selector });
+    Inputs.remove({ dayId: selector });
     return super.remove(selector, callback);
   }
 }
@@ -68,7 +69,7 @@ Days.helpers({
 
     return this.userId === userId;
   },
-  todos() {
-    return Todos.find({ dayId: this._id }, { sort: { createdAt: -1 } });
+  inputs() {
+    return Inputs.find({ dayId: this._id }, { sort: { createdAt: -1 } });
   },
 });

@@ -3,10 +3,10 @@
 import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
-import { Todos } from '../todos.js';
+import { Inputs } from '../inputs.js';
 import { Days } from '../../days/days.js';
 
-Meteor.publishComposite('todos.inDay', function todosInDay(dayId) {
+Meteor.publishComposite('inputs.inDay', function inputsInDay(dayId) {
   new SimpleSchema({
     dayId: { type: String },
   }).validate({ dayId });
@@ -21,7 +21,7 @@ Meteor.publishComposite('todos.inDay', function todosInDay(dayId) {
       };
 
       // We only need the _id field in this query, since it's only
-      // used to drive the child queries to get the todos
+      // used to drive the child queries to get the inputs
       const options = {
         fields: { _id: 1 },
       };
@@ -31,7 +31,7 @@ Meteor.publishComposite('todos.inDay', function todosInDay(dayId) {
 
     children: [{
       find(day) {
-        return Todos.find({ dayId: day._id }, { fields: Todos.publicFields });
+        return Inputs.find({ dayId: day._id }, { fields: Inputs.publicFields });
       },
     }],
   };

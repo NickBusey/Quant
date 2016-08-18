@@ -8,7 +8,7 @@ import { $ } from 'meteor/jquery';
 import './days-show.html';
 
 // Component used in the template
-import './todos-item.js';
+import './inputs-item.js';
 
 import {
   updateName,
@@ -19,7 +19,7 @@ import {
 
 import {
   insert,
-} from '../../api/todos/methods.js';
+} from '../../api/inputs/methods.js';
 
 import { displayError } from '../lib/errors.js';
 
@@ -31,15 +31,15 @@ Template.Days_show.onCreated(function dayShowOnCreated() {
   this.autorun(() => {
     new SimpleSchema({
       day: { type: Function },
-      todosReady: { type: Boolean },
-      todos: { type: Mongo.Cursor },
+      inputsReady: { type: Boolean },
+      inputs: { type: Mongo.Cursor },
     }).validate(Template.currentData());
   });
 
   this.state = new ReactiveDict();
   this.state.setDefault({
     editing: false,
-    editingTodo: false,
+    editingInput: false,
   });
 
   this.saveDay = () => {
@@ -92,13 +92,13 @@ Template.Days_show.onCreated(function dayShowOnCreated() {
 });
 
 Template.Days_show.helpers({
-  todoArgs(todo) {
+  inputArgs(input) {
     const instance = Template.instance();
     return {
-      todo,
-      editing: instance.state.equals('editingTodo', todo._id),
+      input,
+      editing: instance.state.equals('editingInput', input._id),
       onEditingChange(editing) {
-        instance.state.set('editingTodo', editing ? todo._id : false);
+        instance.state.set('editingInput', editing ? input._id : false);
       },
     };
   },
@@ -166,11 +166,11 @@ Template.Days_show.events({
     instance.deleteDay();
   },
 
-  'click .js-todo-add'(event, instance) {
-    instance.$('.js-todo-new input').focus();
+  'click .js-input-add'(event, instance) {
+    instance.$('.js-input-new input').focus();
   },
 
-  'submit .js-todo-new'(event) {
+  'submit .js-input-new'(event) {
     event.preventDefault();
 
     const $input = $(event.target).find('[type=text]');

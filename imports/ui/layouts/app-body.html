@@ -24,7 +24,7 @@
           </div>
         {{/if}}
 
-        <div class="day-todos">
+        <div class="day-inputs">
           <a class="js-new-day link-day-new">
             <span class="icon-plus"></span>
             {{_ "New Day"}}
@@ -32,7 +32,7 @@
 
           {{#each day in days}}
             <a href="{{pathFor 'Days.show' _id=day._id}}" title="{{day.date}}"
-                class="day-todo {{activeDayClass day}}">
+                class="day-input {{activeDayClass day}}">
               {{day.date}}
             </a>
           {{/each}}

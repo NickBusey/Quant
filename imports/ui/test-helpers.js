@@ -1,4 +1,4 @@
-// TODO -- this should probably be some kind of test package that people use
+// input -- this should probably be some kind of test package that people use
 
 import { _ } from 'meteor/underscore';
 import { Template } from 'meteor/templating';

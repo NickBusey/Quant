@@ -16,14 +16,14 @@ import { sinon } from 'meteor/practicalmeteor:sinon';
 import { withRenderedTemplate } from '../../test-helpers.js';
 import '../lists-show-page.js';
 
-import { Todos } from '../../../api/todos/todos.js';
+import { inputs } from '../../../api/inputs/inputs.js';
 import { Lists } from '../../../api/lists/lists.js';
 
 describe('Lists_show_page', function () {
   const listId = Random.id();
 
   beforeEach(function () {
-    StubCollections.stub([Todos, Lists]);
+    StubCollections.stub([inputs, Lists]);
     Template.registerHelper('_', key => key);
     sinon.stub(FlowRouter, 'getParam', () => listId);
     sinon.stub(Meteor, 'subscribe', () => ({
@@ -42,17 +42,17 @@ describe('Lists_show_page', function () {
   it('renders correctly with simple data', function () {
     Factory.create('list', { _id: listId });
     const timestamp = new Date();
-    const todos = _.times(3, i => Factory.create('todo', {
+    const inputs = _.times(3, i => Factory.create('input', {
       listId,
       createdAt: new Date(timestamp - (3 - i)),
     }));
 
     withRenderedTemplate('Lists_show_page', {}, el => {
-      const todosText = todos.map(t => t.text).reverse();
+      const inputsText = inputs.map(t => t.text).reverse();
       const renderedText = $(el).find('.list-items input[type=text]')
         .map((i, e) => $(e).val())
         .toArray();
-      chai.assert.deepEqual(renderedText, todosText);
+      chai.assert.deepEqual(renderedText, inputsText);
     });
   });
 });
