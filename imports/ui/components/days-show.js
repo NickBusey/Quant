@@ -5,7 +5,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tracker } from 'meteor/tracker';
 import { $ } from 'meteor/jquery';
 
-import './lists-show.html';
+import './days-show.html';
 
 // Component used in the template
 import './todos-item.js';
@@ -15,7 +15,7 @@ import {
   makePublic,
   makePrivate,
   remove,
-} from '../../api/lists/methods.js';
+} from '../../api/days/methods.js';
 
 import {
   insert,
@@ -27,10 +27,10 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-Template.Lists_show.onCreated(function listShowOnCreated() {
+Template.Days_show.onCreated(function dayShowOnCreated() {
   this.autorun(() => {
     new SimpleSchema({
-      list: { type: Function },
+      day: { type: Function },
       todosReady: { type: Boolean },
       todos: { type: Mongo.Cursor },
     }).validate(Template.currentData());
@@ -42,19 +42,19 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     editingTodo: false,
   });
 
-  this.saveList = () => {
+  this.saveDay = () => {
     this.state.set('editing', false);
 
     const newName = this.$('[name=name]').val().trim();
     if (newName) {
       updateName.call({
-        listId: this.data.list()._id,
+        dayId: this.data.day()._id,
         newName,
       }, displayError);
     }
   };
 
-  this.editList = () => {
+  this.editDay = () => {
     this.state.set('editing', true);
 
     // force the template to redraw based on the reactive change
@@ -65,13 +65,13 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     }, 400);
   };
 
-  this.deleteList = () => {
-    const list = this.data.list();
-    const message = `${TAPi18n.__('Are you sure you want to delete the list')} ${list.name}?`;
+  this.deleteDay = () => {
+    const day = this.data.day();
+    const message = `${TAPi18n.__('Are you sure you want to delete the day')} ${day.name}?`;
 
     if (confirm(message)) { // eslint-disable-line no-alert
       remove.call({
-        listId: list._id,
+        dayId: day._id,
       }, displayError);
 
       FlowRouter.go('App.home');
@@ -81,17 +81,17 @@ Template.Lists_show.onCreated(function listShowOnCreated() {
     return false;
   };
 
-  this.toggleListPrivacy = () => {
-    const list = this.data.list();
-    if (list.userId) {
-      makePublic.call({ listId: list._id }, displayError);
+  this.toggleDayPrivacy = () => {
+    const day = this.data.day();
+    if (day.userId) {
+      makePublic.call({ dayId: day._id }, displayError);
     } else {
-      makePrivate.call({ listId: list._id }, displayError);
+      makePrivate.call({ dayId: day._id }, displayError);
     }
   };
 });
 
-Template.Lists_show.helpers({
+Template.Days_show.helpers({
   todoArgs(todo) {
     const instance = Template.instance();
     return {
@@ -108,7 +108,7 @@ Template.Lists_show.helpers({
   },
 });
 
-Template.Lists_show.events({
+Template.Days_show.events({
   'click .js-cancel'(event, instance) {
     instance.state.set('editing', false);
   },
@@ -124,13 +124,13 @@ Template.Lists_show.events({
   'blur input[type=text]'(event, instance) {
     // if we are still editing (we haven't just clicked the cancel button)
     if (instance.state.get('editing')) {
-      instance.saveList();
+      instance.saveDay();
     }
   },
 
   'submit .js-edit-form'(event, instance) {
     event.preventDefault();
-    instance.saveList();
+    instance.saveDay();
   },
 
   // handle mousedown otherwise the blur handler above will swallow the click
@@ -141,29 +141,29 @@ Template.Lists_show.events({
   },
 
   // This is for the mobile dropdown
-  'change .list-edit'(event, instance) {
+  'change .day-edit'(event, instance) {
     const target = event.target;
     if ($(target).val() === 'edit') {
-      instance.editList();
+      instance.editDay();
     } else if ($(target).val() === 'delete') {
-      instance.deleteList();
+      instance.deleteDay();
     } else {
-      instance.toggleListPrivacy();
+      instance.toggleDayPrivacy();
     }
 
     target.selectedIndex = 0;
   },
 
-  'click .js-edit-list'(event, instance) {
-    instance.editList();
+  'click .js-edit-day'(event, instance) {
+    instance.editDay();
   },
 
-  'click .js-toggle-list-privacy'(event, instance) {
-    instance.toggleListPrivacy();
+  'click .js-toggle-day-privacy'(event, instance) {
+    instance.toggleDayPrivacy();
   },
 
-  'click .js-delete-list'(event, instance) {
-    instance.deleteList();
+  'click .js-delete-day'(event, instance) {
+    instance.deleteDay();
   },
 
   'click .js-todo-add'(event, instance) {
@@ -179,7 +179,7 @@ Template.Lists_show.events({
     }
 
     insert.call({
-      listId: this.list()._id,
+      dayId: this.day()._id,
       text: $input.val(),
     }, displayError);
 

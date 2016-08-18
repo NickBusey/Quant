@@ -5,21 +5,21 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 
 import { Todos } from './todos.js';
-import { Lists } from '../lists/lists.js';
+import { Days } from '../days/days.js';
 
 export const insert = new ValidatedMethod({
   name: 'todos.insert',
-  validate: Todos.simpleSchema().pick(['listId', 'text']).validator({ clean: true, filter: false }),
-  run({ listId, text }) {
-    const list = Lists.findOne(listId);
+  validate: Todos.simpleSchema().pick(['dayId', 'text']).validator({ clean: true, filter: false }),
+  run({ dayId, text }) {
+    const day = Days.findOne(dayId);
 
-    if (list.isPrivate() && list.userId !== this.userId) {
+    if (day.isPrivate() && day.userId !== this.userId) {
       throw new Meteor.Error('todos.insert.accessDenied',
-        'Cannot add todos to a private list that is not yours');
+        'Cannot add todos to a private day that is not yours');
     }
 
     const todo = {
-      listId,
+      dayId,
       text,
       checked: false,
       createdAt: new Date(),
@@ -45,7 +45,7 @@ export const setCheckedStatus = new ValidatedMethod({
 
     if (!todo.editableBy(this.userId)) {
       throw new Meteor.Error('todos.setCheckedStatus.accessDenied',
-        'Cannot edit checked status in a private list that is not yours');
+        'Cannot edit checked status in a private day that is not yours');
     }
 
     Todos.update(todoId, { $set: {
@@ -67,7 +67,7 @@ export const updateText = new ValidatedMethod({
 
     if (!todo.editableBy(this.userId)) {
       throw new Meteor.Error('todos.updateText.accessDenied',
-        'Cannot edit todos in a private list that is not yours');
+        'Cannot edit todos in a private day that is not yours');
     }
 
     Todos.update(todoId, {
@@ -86,14 +86,14 @@ export const remove = new ValidatedMethod({
 
     if (!todo.editableBy(this.userId)) {
       throw new Meteor.Error('todos.remove.accessDenied',
-        'Cannot remove todos in a private list that is not yours');
+        'Cannot remove todos in a private day that is not yours');
     }
 
     Todos.remove(todoId);
   },
 });
 
-// Get list of all method names on Todos
+// Get day of all method names on Todos
 const TODOS_METHODS = _.pluck([
   insert,
   setCheckedStatus,

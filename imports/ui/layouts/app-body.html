@@ -24,24 +24,24 @@
           </div>
         {{/if}}
 
-        <div class="list-todos">
-          <a class="js-new-list link-list-new">
+        <div class="day-todos">
+          <a class="js-new-day link-day-new">
             <span class="icon-plus"></span>
-            {{_ "New List"}}
+            {{_ "New Day"}}
           </a>
 
-          {{#each list in lists}}
-            <a href="{{pathFor 'Lists.show' _id=list._id}}" title="{{list.name}}"
-                class="list-todo {{activeListClass list}}">
-              {{#if list.userId}}
+          {{#each day in days}}
+            <a href="{{pathFor 'Days.show' _id=day._id}}" title="{{day.name}}"
+                class="day-todo {{activeDayClass day}}">
+              {{#if day.userId}}
                 <span class="icon-lock"></span>
               {{/if}}
 
-              {{#if list.incompleteCount}}
-                <span class="count-list">{{list.incompleteCount}}</span>
+              {{#if day.incompleteCount}}
+                <span class="count-day">{{day.incompleteCount}}</span>
               {{/if}}
 
-              {{list.name}}
+              {{day.name}}
             </a>
           {{/each}}
         </div>

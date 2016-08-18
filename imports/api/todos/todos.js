@@ -4,7 +4,7 @@ import faker from 'faker';
 
 import incompleteCountDenormalizer from './incompleteCountDenormalizer.js';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { Lists } from '../lists/lists.js';
+import { Days } from '../days/days.js';
 
 class TodosCollection extends Mongo.Collection {
   insert(doc, callback) {
@@ -41,7 +41,7 @@ Todos.schema = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
   },
-  listId: {
+  dayId: {
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     denyUpdate: true,
@@ -62,11 +62,11 @@ Todos.schema = new SimpleSchema({
 
 Todos.attachSchema(Todos.schema);
 
-// This represents the keys from Lists objects that should be published
-// to the client. If we add secret properties to List objects, don't list
+// This represents the keys from Days objects that should be published
+// to the client. If we add secret properties to Day objects, don't day
 // them here to keep them private to the server.
 Todos.publicFields = {
-  listId: 1,
+  dayId: 1,
   text: 1,
   createdAt: 1,
   checked: 1,
@@ -76,16 +76,16 @@ Todos.publicFields = {
 //   - usually I've used the singular, sometimes you have more than one though, like
 //   'todo', 'emptyTodo', 'checkedTodo'
 Factory.define('todo', Todos, {
-  listId: () => Factory.get('list'),
+  dayId: () => Factory.get('day'),
   text: () => faker.lorem.sentence(),
   createdAt: () => new Date(),
 });
 
 Todos.helpers({
-  list() {
-    return Lists.findOne(this.listId);
+  day() {
+    return Days.findOne(this.dayId);
   },
   editableBy(userId) {
-    return this.list().editableBy(userId);
+    return this.day().editableBy(userId);
   },
 });

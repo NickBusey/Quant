@@ -3,13 +3,13 @@ import './app-body.html';
 import { Meteor } from 'meteor/meteor';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { Lists } from '../../api/lists/lists.js';
+import { Days } from '../../api/days/days.js';
 import { Template } from 'meteor/templating';
 import { ActiveRoute } from 'meteor/zimme:active-route';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-import { insert } from '../../api/lists/methods.js';
+import { insert } from '../../api/days/methods.js';
 
 import '../components/loading.js';
 
@@ -32,8 +32,8 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('lists.public');
-  this.subscribe('lists.private');
+  this.subscribe('days.public');
+  this.subscribe('days.private');
 
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -58,15 +58,15 @@ Template.App_body.helpers({
     const instance = Template.instance();
     return instance.state.get('userMenuOpen');
   },
-  lists() {
-    return Lists.find({ $or: [
+  days() {
+    return Days.find({ $or: [
       { userId: { $exists: false } },
       { userId: Meteor.userId() },
     ] });
   },
-  activeListClass(list) {
-    const active = ActiveRoute.name('Lists.show')
-      && FlowRouter.getParam('_id') === list._id;
+  activeDayClass(day) {
+    const active = ActiveRoute.name('Days.show')
+      && FlowRouter.getParam('_id') === day._id;
 
     return active && 'active';
   },
@@ -110,27 +110,27 @@ Template.App_body.events({
   'click .js-logout'() {
     Meteor.logout();
 
-    // if we are on a private list, we'll need to go to a public one
-    if (ActiveRoute.name('Lists.show')) {
+    // if we are on a private day, we'll need to go to a public one
+    if (ActiveRoute.name('Days.show')) {
       // TODO -- test this code path
-      const list = Lists.findOne(FlowRouter.getParam('_id'));
-      if (list.userId) {
-        FlowRouter.go('Lists.show', Lists.findOne({ userId: { $exists: false } }));
+      const day = Days.findOne(FlowRouter.getParam('_id'));
+      if (day.userId) {
+        FlowRouter.go('Days.show', Days.findOne({ userId: { $exists: false } }));
       }
     }
   },
 
-  'click .js-new-list'() {
-    const listId = insert.call((err) => {
+  'click .js-new-day'() {
+    const dayId = insert.call((err) => {
       if (err) {
-        // At this point, we have already redirected to the new list page, but
-        // for some reason the list didn't get created. This should almost never
+        // At this point, we have already redirected to the new day page, but
+        // for some reason the day didn't get created. This should almost never
         // happen, but it's good to handle it anyway.
         FlowRouter.go('App.home');
-        alert(TAPi18n.__('Could not create list.')); // eslint-disable-line no-alert
+        alert(TAPi18n.__('Could not create day.')); // eslint-disable-line no-alert
       }
     });
 
-    FlowRouter.go('Lists.show', { _id: listId });
+    FlowRouter.go('Days.show', { _id: dayId });
   },
 });

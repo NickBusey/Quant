@@ -1,9 +1,9 @@
-<template name="Lists_show">
-  <div class="page lists-show">
+<template name="Days_show">
+  <div class="page days-show">
     <nav class="js-title-nav">
       {{#momentum plugin="fade"}}
         {{#if editing}}
-          <form class="js-edit-form list-edit-form">
+          <form class="js-edit-form day-edit-form">
             <input type="text" name="name" value="{{name}}">
             <div class="nav-group right">
               <a href="#" class="js-cancel nav-item">
@@ -14,20 +14,20 @@
         {{else}}
           <div class="nav-group">
             <a href="#" class="js-menu nav-item">
-              <span class="icon-list-unordered" title={{_ 'Show Menu'}}></span>
+              <span class="icon-day-unordered" title={{_ 'Show Menu'}}></span>
             </a>
           </div>
 
-          <h1 class="js-edit-list title-page">
-            <span class="title-wrapper">{{list.name}}</span>
-            <span class="count-list">{{list.incompleteCount}}</span>
+          <h1 class="js-edit-day title-page">
+            <span class="title-wrapper">{{day.name}}</span>
+            <span class="count-day">{{day.incompleteCount}}</span>
           </h1>
 
           <div class="nav-group right">
             <div class="nav-item options-mobile">
-              <select class="list-edit">
+              <select class="day-edit">
                 <option disabled selected>{{_ 'Select an action'}}</option>
-                {{#if list.userId}}
+                {{#if day.userId}}
                   <option value="public">{{_ 'Make Public'}}</option>
                 {{else}}
                   <option value="private">{{_ 'Make Private'}}</option>
@@ -37,16 +37,16 @@
               <span class="icon-cog"></span>
             </div>
             <div class="options-web">
-              <a class="js-toggle-list-privacy nav-item">
-                {{#if list.userId}}
-                  <span class="icon-lock" title={{_ 'Make list public'}}></span>
+              <a class="js-toggle-day-privacy nav-item">
+                {{#if day.userId}}
+                  <span class="icon-lock" title={{_ 'Make day public'}}></span>
                 {{else}}
-                  <span class="icon-unlock" title={{_ 'Make list private'}}></span>
+                  <span class="icon-unlock" title={{_ 'Make day private'}}></span>
                 {{/if}}
               </a>
 
-              <a class="js-delete-list nav-item">
-                <span class="icon-trash" title={{_ 'Delete list'}}></span>
+              <a class="js-delete-day nav-item">
+                <span class="icon-trash" title={{_ 'Delete day'}}></span>
               </a>
             </div>
           </div>
@@ -60,7 +60,7 @@
     </nav>
 
 
-    <div class="content-scrollable list-items">
+    <div class="content-scrollable day-items">
       {{#if todosReady}}
         {{#each todo in todos}}
           {{> Todos_item (todoArgs todo)}}

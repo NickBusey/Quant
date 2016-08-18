@@ -4,19 +4,19 @@ import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import { Todos } from '../todos.js';
-import { Lists } from '../../lists/lists.js';
+import { Days } from '../../days/days.js';
 
-Meteor.publishComposite('todos.inList', function todosInList(listId) {
+Meteor.publishComposite('todos.inDay', function todosInDay(dayId) {
   new SimpleSchema({
-    listId: { type: String },
-  }).validate({ listId });
+    dayId: { type: String },
+  }).validate({ dayId });
 
   const userId = this.userId;
 
   return {
     find() {
       const query = {
-        _id: listId,
+        _id: dayId,
         $or: [{ userId: { $exists: false } }, { userId }],
       };
 
@@ -26,12 +26,12 @@ Meteor.publishComposite('todos.inList', function todosInList(listId) {
         fields: { _id: 1 },
       };
 
-      return Lists.find(query, options);
+      return Days.find(query, options);
     },
 
     children: [{
-      find(list) {
-        return Todos.find({ listId: list._id }, { fields: Todos.publicFields });
+      find(day) {
+        return Todos.find({ dayId: day._id }, { fields: Todos.publicFields });
       },
     }],
   };
