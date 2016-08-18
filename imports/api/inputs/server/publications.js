@@ -22,16 +22,10 @@ Meteor.publishComposite('inputs.inDate', function inputsInDay(date) {
       // We only need the _id field in this query, since it's only
       // used to drive the child queries to get the inputs
       const options = {
-        fields: { _id: 1 },
+        fields: Inputs.publicFields,
       };
 
-      return Days.find(query, options);
-    },
-
-    children: [{
-      find(day) {
-        return Inputs.find({ date: date }, { fields: Inputs.publicFields });
-      },
-    }],
+      return Inputs.find(query, options);
+    }
   };
 });

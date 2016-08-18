@@ -14,6 +14,7 @@ Template.Days_show_page.onCreated(function daysShowPageOnCreated() {
   this.getDate = () => FlowRouter.getParam('date');
 
   this.autorun(() => {
+    console.log(this.getDate());
     this.subscribe('inputs.inDate', this.getDate());
   });
 });
@@ -38,9 +39,11 @@ Template.Days_show_page.helpers({
   listArgs(listId) {
     const instance = Template.instance();
     const inputs = Inputs.find({})
+    const date = FlowRouter.getParam('date');
     return {
       inputsReady: instance.subscriptionsReady(),
       inputs,
+      date
     };
   },
 });

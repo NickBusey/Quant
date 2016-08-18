@@ -9,11 +9,11 @@ import { Days } from '../days/days.js';
 
 export const insert = new ValidatedMethod({
   name: 'inputs.insert',
-  validate: Inputs.simpleSchema().pick(['text']).validator({ clean: true, filter: false }),
-  run({ text }) {
+  validate: Inputs.simpleSchema().pick(['text','date']).validator({ clean: true, filter: false }),
+  run({ text, date }) {
     const input = {
       text,
-      date: new Date().toJSON().slice(0,10),
+      date
     };
 
     Inputs.insert(input);

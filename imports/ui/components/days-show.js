@@ -98,7 +98,7 @@ Template.Days_show.events({
     instance.$('.js-input-new input').focus();
   },
 
-  'submit .js-input-new'(event) {
+  'submit .js-input-new'(event, instance) {
     event.preventDefault();
 
     const $input = $(event.target).find('[type=text]');
