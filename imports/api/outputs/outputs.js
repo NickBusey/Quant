@@ -41,6 +41,7 @@ Outputs.schema = new SimpleSchema({
   weight: {
     type: Number,
     min: 1,
+    decimal: true
   },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id },
 });

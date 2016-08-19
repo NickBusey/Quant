@@ -26,6 +26,7 @@ export const updateWeight = new ValidatedMethod({
   validate: new SimpleSchema({
     weight: {
       type: Number,
+      decimal: true,
       min: 1
     },
     date: {
