@@ -1,8 +1,11 @@
 <template name="Days_show">
   <div class="page days-show">
     <nav class="js-title-nav">
+      <form class="weight">
+        <input type="text" placeholder="{{_ 'Weight'}}" value="{{weight}}">
+      </form>
       <form class="js-input-new input-new input-symbol">
-        <input type="text" placeholder={{_ 'Type to add new tasks'}}>
+        <input type="text" placeholder={{_ 'Type to add new foods'}}>
         <span class="icon-add js-input-add"></span>
       </form>
     </nav>
@@ -14,13 +17,13 @@
           {{> Inputs_item (inputArgs input)}}
         {{else}}
           <div class="wrapper-message">
-            <div class="title-message">{{_ 'No tasks here'}}</div>
-            <div class="subtitle-message">{{_ 'Add new tasks using the field above'}}</div>
+            <div class="title-message">{{_ 'No foods'}}</div>
+            <div class="subtitle-message">{{_ 'Add new foods using the field above'}}</div>
           </div>
         {{/each}}
       {{else}}
           <div class="wrapper-message">
-            <div class="title-message">{{_ 'Loading tasks...'}}</div>
+            <div class="title-message">{{_ 'Loading foods...'}}</div>
           </div>
       {{/if}}
     </div>

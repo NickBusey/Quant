@@ -7,7 +7,7 @@ import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import { Inputs } from './inputs.js';
 import { Days } from '../days/days.js';
 
-export const insert = new ValidatedMethod({
+export const insertInput = new ValidatedMethod({
   name: 'inputs.insert',
   validate: Inputs.simpleSchema().pick(['text','date']).validator({ clean: true, filter: false }),
   run({ text, date }) {
@@ -31,13 +31,6 @@ export const updateText = new ValidatedMethod({
   run({ inputId, newText }) {
     // This is complex auth stuff - perhaps denormalizing a userId onto inputs
     // would be correct here?
-    const input = Inputs.findOne(inputId);
-
-    if (!input.editableBy(this.userId)) {
-      throw new Meteor.Error('inputs.updateText.accessDenied',
-        'Cannot edit inputs in a private day that is not yours');
-    }
-
     Inputs.update(inputId, {
       $set: { text: newText },
     });
@@ -63,7 +56,7 @@ export const remove = new ValidatedMethod({
 
 // Get day of all method names on Inputs
 const INPUTS_METHODS = _.pluck([
-  insert,
+  insertInput,
   updateText,
   remove,
 ], 'name');
