@@ -75,9 +75,7 @@ Template.App_body.helpers({
     return date.toJSON().slice(0,10);
   },
   activeDayClass(day) {
-    const active = ActiveRoute.name('Days.show')
-      && FlowRouter.getParam('_id') === day._id;
-
+    const active = FlowRouter.getParam('date') == day;
     return active && 'active';
   },
   connected() {
