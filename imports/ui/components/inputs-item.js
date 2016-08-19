@@ -66,7 +66,6 @@ Template.Inputs_item.events({
   // we don't flood the server with updates (handles the event at most once
   // every 300ms)
   'keyup input[type=text]': _.throttle(function inputsItemKeyUpInner(event) {
-    console.log(this.input,event.target.value);
     updateText.call({
       inputId: this.input._id,
       newText: event.target.value,

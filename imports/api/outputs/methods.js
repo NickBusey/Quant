@@ -11,7 +11,6 @@ export const insertOutput = new ValidatedMethod({
   name: 'outputs.insert',
   validate: Outputs.simpleSchema().pick(['text','date']).validator({ clean: true, filter: false }),
   run({ text, date }) {
-    console.log(Meteor.userId());
     const output = {
       text,
       date,

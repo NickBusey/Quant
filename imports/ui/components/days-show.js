@@ -20,6 +20,7 @@ import {
 
 import {
   insertInput,
+  updateText,
 } from '../../api/inputs/methods.js';
 
 import {
@@ -70,7 +71,84 @@ Template.Days_show.helpers({
 });
 
 Template.Days_show.events({
-  'keyup input[type=text]': _.throttle(function weightItemKeyUpInner(event) {
+  'click .js-cancel'(event, instance) {
+    instance.state.set('editing', false);
+  },
+
+  'keydown input[type=text]'(event) {
+    // ESC
+    if (event.which === 27) {
+      event.preventDefault();
+      $(event.target).blur();
+    }
+  },
+
+  'blur input[type=text]'(event, instance) {
+    // if we are still editing (we haven't just clicked the cancel button)
+    if (instance.state.get('editing')) {
+      instance.saveList();
+    }
+  },
+
+  'submit .js-edit-form'(event, instance) {
+    event.preventDefault();
+    instance.saveList();
+  },
+
+  // handle mousedown otherwise the blur handler above will swallow the click
+  // on iOS, we still require the click event so handle both
+  'mousedown .js-cancel, click .js-cancel'(event, instance) {
+    event.preventDefault();
+    instance.state.set('editing', false);
+  },
+
+  // This is for the mobile dropdown
+  'change .list-edit'(event, instance) {
+    const target = event.target;
+    if ($(target).val() === 'edit') {
+      instance.editList();
+    } else if ($(target).val() === 'delete') {
+      instance.deleteList();
+    } else {
+      instance.toggleListPrivacy();
+    }
+
+    target.selectedIndex = 0;
+  },
+
+  'click .js-edit-list'(event, instance) {
+    instance.editList();
+  },
+
+  'click .js-toggle-list-privacy'(event, instance) {
+    instance.toggleListPrivacy();
+  },
+
+  'click .js-delete-list'(event, instance) {
+    instance.deleteList();
+  },
+
+  'click .js-input-add'(event, instance) {
+    instance.$('.js-todo-new input').focus();
+  },
+
+  'submit .js-input-new'(event) {
+    event.preventDefault();
+
+    const $input = $(event.target).find('[type=text]');
+    if (!$input.val()) {
+      return;
+    }
+
+    insertInput.call({
+      date: that.data.date,
+      text: $input.val(),
+    }, displayError);
+
+    $input.val('');
+  },
+
+  'keyup input.weightInput[type=text]': _.throttle(function weightItemKeyUpInner(event) {
     updateWeight.call({
       weight: event.target.value,
       date: that.data.date
