@@ -33,7 +33,7 @@ Template.Days_show.onCreated(function dayShowOnCreated() {
       date: { type: String },
       inputsReady: { type: Boolean },
       inputs: { type: Mongo.Cursor },
-      weight: { type: Number }
+      weight: { type: Number, decimal: true }
     }).validate(Template.currentData());
   });
   that = this;
