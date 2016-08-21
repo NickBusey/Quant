@@ -1,11 +1,10 @@
 <template name="Inputs_item">
   <div class="day-item {{checkedClass input}} {{editingClass editing}}">
     <label class="checkbox">
-      <input type="checkbox" checked="{{input.checked}}" name="checked">
-      <span class="checkbox-custom"></span>
+      <input type="text" class='count' value="{{input.count}}">
     </label>
 
-    <input type="text" value="{{input.text}}" placeholder={{_ 'Task name'}}>
+    <input type="text" class='text' value="{{input.text}}" placeholder={{_ 'Task name'}}>
     <a class="js-delete-item delete-item" href="#">
       <span class="icon-trash"></span>
     </a>

@@ -15,7 +15,8 @@ export const insertInput = new ValidatedMethod({
     const input = {
       text,
       date,
-      userId: Meteor.userId()
+      userId: Meteor.userId(),
+      count: 0
     };
 
     Inputs.insert(input);
@@ -33,6 +34,21 @@ export const updateText = new ValidatedMethod({
     // would be correct here?
     Inputs.update(inputId, {
       $set: { text: newText },
+    });
+  },
+});
+
+export const updateCount = new ValidatedMethod({
+  name: 'inputs.updateCount',
+  validate: new SimpleSchema({
+    inputId: Inputs.simpleSchema().schema('_id'),
+    count: Inputs.simpleSchema().schema('count'),
+  }).validator({ clean: true, filter: false }),
+  run({ inputId, count }) {
+    // This is complex auth stuff - perhaps denormalizing a userId onto inputs
+    // would be correct here?
+    Inputs.update(inputId, {
+      $set: { count: count },
     });
   },
 });

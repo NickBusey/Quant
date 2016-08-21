@@ -42,6 +42,10 @@ Inputs.schema = new SimpleSchema({
     type: String,
     max: 100,
   },
+  count: {
+    type: Number,
+    decimal: true
+  },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id },
 });
 
@@ -53,6 +57,7 @@ Inputs.attachSchema(Inputs.schema);
 Inputs.publicFields = {
   date: 1,
   text: 1,
+  count: 1,
 };
 
 // INPUT This factory has a name - do we have a code style for this?

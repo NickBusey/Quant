@@ -9,6 +9,7 @@ import { Inputs } from '../../api/inputs/inputs.js';
 import {
   setCheckedStatus,
   updateText,
+  updateCount,
   remove,
 } from '../../api/inputs/methods.js';
 
@@ -35,15 +36,6 @@ Template.Inputs_item.helpers({
 });
 
 Template.Inputs_item.events({
-  'change [type=checkbox]'(event) {
-    const checked = $(event.target).is(':checked');
-
-    setCheckedStatus.call({
-      inputId: this.input._id,
-      newCheckedStatus: checked,
-    });
-  },
-
   'focus input[type=text]'() {
     this.onEditingChange(true);
   },
@@ -65,10 +57,17 @@ Template.Inputs_item.events({
   // update the text of the item on keypress but throttle the event to ensure
   // we don't flood the server with updates (handles the event at most once
   // every 300ms)
-  'keyup input[type=text]': _.throttle(function inputsItemKeyUpInner(event) {
+  'keyup input.text[type=text]': _.throttle(function inputsItemTextKeyUpInner(event) {
     updateText.call({
       inputId: this.input._id,
       newText: event.target.value,
+    }, displayError);
+  }, 300),
+
+  'keyup input.count[type=text]': _.throttle(function inputsItemCountKeyUpInner(event) {
+    updateCount.call({
+      inputId: this.input._id,
+      count: event.target.value,
     }, displayError);
   }, 300),
 
