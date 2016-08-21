@@ -15,7 +15,6 @@ export const insertInput = new ValidatedMethod({
       text,
       date,
       userId: Meteor.userId(),
-      count: 0
     };
 
     Inputs.insert(input);
