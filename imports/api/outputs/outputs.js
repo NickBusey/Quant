@@ -3,7 +3,6 @@ import { Factory } from 'meteor/factory';
 import faker from 'faker';
 
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
-import { Days } from '../days/days.js';
 
 class OutputsCollection extends Mongo.Collection {
   insert(doc, callback) {

@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 
 import { Inputs } from '../inputs.js';
-import { Days } from '../../days/days.js';
 
 Meteor.publishComposite('inputs.inDate', function inputsInDay(date) {
   new SimpleSchema({

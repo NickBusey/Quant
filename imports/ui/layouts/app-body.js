@@ -9,8 +9,6 @@ import { ActiveRoute } from 'meteor/zimme:active-route';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { TAPi18n } from 'meteor/tap:i18n';
 
-import { insert } from '../../api/days/methods.js';
-
 import '../components/loading.js';
 
 const CONNECTION_ISSUE_TIMEOUT = 5000;

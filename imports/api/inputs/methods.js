@@ -5,7 +5,6 @@ import { SimpleSchema } from 'meteor/aldeed:simple-schema';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 
 import { Inputs } from './inputs.js';
-import { Days } from '../days/days.js';
 
 export const insertInput = new ValidatedMethod({
   name: 'inputs.insert',

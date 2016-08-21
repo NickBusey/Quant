@@ -6,13 +6,15 @@
           <span class="icon-list-unordered">X</span>
         </a>
       </div>
+  <h1>Export</h1>
      </nav>
-	<h1>Export</h1>
+<div class="content-scrollable">
 	For now this is manual. That'll be one of the first things changed.<br />
 <textarea cols=80 rows=20>
 Date,MorningWeight,YesterdayFactors
 {{#if exportReady}}{{#each output in outputs}}{{output.date}},{{output.weight}}{{#each input in output.inputs}},{{input.text}}{{#if input.count}}:{{input.count}}{{/if}}{{/each}}
 {{/each}}{{/if}}
 </textarea>
+</div>
 </div>
 </template>

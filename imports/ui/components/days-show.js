@@ -12,13 +12,6 @@ import './days-show.html';
 import './inputs-item.js';
 
 import {
-  updateName,
-  makePublic,
-  makePrivate,
-  remove,
-} from '../../api/days/methods.js';
-
-import {
   insertInput,
   updateText,
 } from '../../api/inputs/methods.js';
