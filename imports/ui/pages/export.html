@@ -9,14 +9,10 @@
      </nav>
 	<h1>Export</h1>
 	For now this is manual. That'll be one of the first things changed.<br />
-	<textarea cols=80 rows=20>
-	Date,MorningWeight,YesterdayFactors
-	{{#if exportReady}}
-		{{#each output in outputs}}
-			{{output.date}},{{output.weight}}
-		{{/each}}
-	{{/if}}
-
-	</textarea>
+<textarea cols=80 rows=20>
+Date,MorningWeight,YesterdayFactors
+{{#if exportReady}}{{#each output in outputs}}{{output.date}},{{output.weight}}{{#each input in output.inputs}},{{input.text}}{{/each}}
+{{/each}}{{/if}}
+</textarea>
 </div>
 </template>

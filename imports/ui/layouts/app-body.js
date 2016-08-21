@@ -75,7 +75,6 @@ Template.App_body.helpers({
       className = 'active'
     }
     var output = Outputs.findOne({date:day});
-    console.log(output);
     if (output) {
       className = className+' hasContent';
     }

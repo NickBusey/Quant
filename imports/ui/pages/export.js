@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Outputs } from '../../api/outputs/outputs.js';
+import { Inputs } from '../../api/inputs/inputs.js';
 
 import './export.html';
 
@@ -9,6 +10,7 @@ Template.App_export.onCreated(function daysShowPageOnCreated() {
 
   this.autorun(() => {
     this.subscribe('outputs');
+    this.subscribe('inputs');
   });
 });
 
@@ -21,21 +23,21 @@ Template.App_export.onCreated(function daysShowPageOnCreated() {
 // });
 
 Template.App_export.helpers({
-  // We use #each on an array of one item so that the "day" template is
-  // removed and a new copy is added when changing days, which is
-  // important for animation purposes.
-  dayIdArray() {
-    const instance = Template.instance();
-    const dayId = instance.getDate();
-    return Days.findOne(dayId) ? [dayId] : [];
-  },
   exportReady() {
     const instance = Template.instance();
     return instance.subscriptionsReady();
   },
   outputs() {
-    return Outputs.find({},{
+    var outputs = Outputs.find({},{
       sort: [ "date" ]
-    });
+    }).fetch();
+    for (var ii in outputs) {
+      var output = outputs[ii];
+      var inputs = Inputs.find({date:output.date}).fetch();
+      console.log(inputs);
+      output.inputs = inputs;
+    }
+    console.log(outputs);
+    return outputs;
   }
 });
