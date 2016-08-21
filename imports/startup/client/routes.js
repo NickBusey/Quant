@@ -4,7 +4,7 @@ import { AccountsTemplates } from 'meteor/useraccounts:core';
 
 // Import to load these templates
 import '../../ui/layouts/app-body.js';
-import '../../ui/pages/root-redirector.js';
+import '../../ui/pages/welcome.js';
 import '../../ui/pages/days-show-page.js';
 import '../../ui/pages/app-not-found.js';
 
@@ -21,7 +21,7 @@ FlowRouter.route('/days/:date', {
 FlowRouter.route('/', {
   name: 'App.home',
   action() {
-    BlazeLayout.render('App_body', { main: 'app_rootRedirector' });
+    BlazeLayout.render('App_body', { main: 'app_welcome' });
   },
 });
 

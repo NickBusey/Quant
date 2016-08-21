@@ -54,7 +54,6 @@ export const remove = new ValidatedMethod({
   },
 });
 
-// Get day of all method names on Inputs
 const INPUTS_METHODS = _.pluck([
   insertInput,
   updateText,
