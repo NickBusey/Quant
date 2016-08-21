@@ -7,8 +7,10 @@
         </a>
       </div>
       <form class="weight">
-        Today's Weight:
+      {{#if inputsReady}}
+        {{date}}'s Weight:
         <input type="text" class='weightInput' placeholder="{{_ 'Weight'}}" value="{{weight}}">
+      {{/if}}
       </form>
       <form class="js-input-new input-new input-symbol">
         <input type="text" class='inputsInput' placeholder={{_ 'Type to add new foods'}}>

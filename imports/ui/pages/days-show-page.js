@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Inputs } from '../../api/inputs/inputs.js';
+import { Outputs } from '../../api/outputs/outputs.js';
 
 import { dayRenderHold } from '../launch-screen.js';
 import './days-show-page.html';
@@ -40,10 +41,12 @@ Template.Days_show_page.helpers({
     const instance = Template.instance();
     const inputs = Inputs.find({});
     const date = FlowRouter.getParam('date');
+    const weight = Outputs.findOne({date:date}).weight;
     return {
       inputsReady: instance.subscriptionsReady(),
       inputs,
-      date
+      date,
+      weight
     };
   },
 });

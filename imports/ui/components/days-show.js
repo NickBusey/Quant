@@ -4,7 +4,6 @@ import { Mongo } from 'meteor/mongo';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tracker } from 'meteor/tracker';
 import { $ } from 'meteor/jquery';
-import { Outputs } from '../../api/outputs/outputs.js';
 
 import './days-show.html';
 
@@ -34,6 +33,7 @@ Template.Days_show.onCreated(function dayShowOnCreated() {
       date: { type: String },
       inputsReady: { type: Boolean },
       inputs: { type: Mongo.Cursor },
+      weight: { type: Number }
     }).validate(Template.currentData());
   });
   that = this;
@@ -54,12 +54,6 @@ Template.Days_show.helpers({
         instance.state.set('editingInput', editing ? input._id : false);
       },
     };
-  },
-  weight() {
-    var output = Outputs.findOne({date:that.data.date});
-    if (output) {
-      return output.weight;
-    }
   }
 });
 
