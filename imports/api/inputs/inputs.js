@@ -59,6 +59,15 @@ Inputs.publicFields = {
   count: 1,
 };
 
+Inputs.helpers({
+  editableBy(userId) {
+    if (!this.userId) {
+      return true;
+    }
+
+    return this.userId === userId;
+  },
+});
 // INPUT This factory has a name - do we have a code style for this?
 //   - usually I've used the singular, sometimes you have more than one though, like
 //   'input', 'emptyInput', 'checkedInput'
