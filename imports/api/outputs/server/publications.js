@@ -30,3 +30,24 @@ Meteor.publishComposite('outputs.inDate', function outputsInDay(date) {
     }
   };
 });
+
+Meteor.publishComposite('outputs', function() {
+
+  const userId = this.userId;
+
+  return {
+    find() {
+      const query = {
+        userId: userId
+      };
+
+      // We only need the _id field in this query, since it's only
+      // used to drive the child queries to get the outputs
+      const options = {
+        fields: Outputs.publicFields,
+      };
+
+      return Outputs.find(query, options);
+    }
+  };
+});

@@ -5,5 +5,5 @@ import { Days } from '../../api/days/days.js';
 
 import './welcome.html';
 
-Template.app_welcome.onCreated(() => {
+Template.App_welcome.onCreated(() => {
 });

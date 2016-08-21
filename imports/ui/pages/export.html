@@ -1,0 +1,22 @@
+<template name="App_export">
+  <div class="page export">
+    <nav class="js-title-nav">
+      <div class="nav-group">
+        <a href="#" class="js-menu nav-item">
+          <span class="icon-list-unordered">X</span>
+        </a>
+      </div>
+     </nav>
+	<h1>Export</h1>
+	For now this is manual. That'll be one of the first things changed.<br />
+	<textarea cols=80 rows=20>
+	Date,MorningWeight,YesterdayFactors
+	{{#if exportReady}}
+		{{#each output in outputs}}
+			{{output.date}},{{output.weight}}
+		{{/each}}
+	{{/if}}
+
+	</textarea>
+</div>
+</template>
