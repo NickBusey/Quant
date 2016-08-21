@@ -33,7 +33,13 @@ Template.App_export.helpers({
     }).fetch();
     for (var ii in outputs) {
       var output = outputs[ii];
-      var inputs = Inputs.find({date:output.date}).fetch();
+      var date = new Date(output.date);
+      console.log(date);
+      date.setDate(date.getDate() - 1);
+      console.log(date);
+      var yesterday = date.toJSON().slice(0,10);
+      console.log(date);
+      var inputs = Inputs.find({date:yesterday}).fetch();
       console.log(inputs);
       output.inputs = inputs;
     }
