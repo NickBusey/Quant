@@ -19,21 +19,20 @@
               <a class="js-logout btn-secondary">{{_ 'Logout'}}</a>
             {{/if}}
           </div>
+          <div class="day-inputs">
+            {{#each date in dates}}
+              <a href="{{pathFor 'Days.show' date=date}}" title="{{date}}"
+                  class="day-input {{dateLinkClass date}}">
+                  {{date}}
+              </a>
+            {{/each}}
+          </div>
         {{else}}
           <div class="btns-group">
             <a href="{{pathFor 'signin'}}" class="btn-secondary">{{_ 'Sign In'}}</a>
             <a href="{{pathFor 'join'}}" class="btn-secondary">{{_ 'Join'}}</a>
           </div>
         {{/if}}
-
-        <div class="day-inputs">
-          {{#each date in dates}}
-            <a href="{{pathFor 'Days.show' date=date}}" title="{{date}}"
-                class="day-input {{dateLinkClass date}}">
-                {{date}}
-            </a>
-          {{/each}}
-        </div>
       </section>
 
       {{#unless connected}}
