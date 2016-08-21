@@ -27,18 +27,12 @@
         {{/if}}
 
         <div class="day-inputs">
+          {{#each date in dates}}
             <a href="{{pathFor 'Days.show' date=date}}" title="{{date}}"
-                class="day-input {{activeDayClass date}}">
+                class="day-input {{dateLinkClass date}}">
                 {{date}}
             </a>
-            <a href="{{pathFor 'Days.show' date=date1}}" title="{{date1}}"
-                class="day-input {{activeDayClass date1}}">
-                {{date1}}
-            </a>
-            <a href="{{pathFor 'Days.show' date=date2}}" title="{{date2}}"
-                class="day-input {{activeDayClass date2}}">
-                {{date2}}
-            </a>
+          {{/each}}
         </div>
       </section>
 

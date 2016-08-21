@@ -3,7 +3,7 @@ import './app-body.html';
 import { Meteor } from 'meteor/meteor';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { ReactiveDict } from 'meteor/reactive-dict';
-import { Days } from '../../api/days/days.js';
+import { Outputs } from '../../api/outputs/outputs.js';
 import { Template } from 'meteor/templating';
 import { ActiveRoute } from 'meteor/zimme:active-route';
 import { FlowRouter } from 'meteor/kadira:flow-router';
@@ -37,6 +37,9 @@ Template.App_body.onCreated(function appBodyOnCreated() {
     menuOpen: false,
     userMenuOpen: false,
   });
+  this.autorun(() => {
+    this.subscribe('outputs');
+  });
 });
 
 Template.App_body.helpers({
@@ -55,28 +58,28 @@ Template.App_body.helpers({
     const instance = Template.instance();
     return instance.state.get('userMenuOpen');
   },
-  days() {
-    return Days.find({ $or: [
-      { userId: { $exists: false } },
-      { userId: Meteor.userId() },
-    ] });
-  },
-  date() {
-    return new Date().toJSON().slice(0,10);
-  },
-  date1() {
+  dates() {
     var date = new Date();
-    date.setDate(date.getDate() - 1);
-    return date.toJSON().slice(0,10);
+    var dates = [];
+    var dateCount = 10;
+    while (dateCount>0) {
+      dates.push(date.toJSON().slice(0,10));
+      date.setDate(date.getDate() - 1);
+      dateCount--;
+    }
+    return dates;
   },
-  date2() {
-    var date = new Date();
-    date.setDate(date.getDate() - 2);
-    return date.toJSON().slice(0,10);
-  },
-  activeDayClass(day) {
-    const active = FlowRouter.getParam('date') == day;
-    return active && 'active';
+  dateLinkClass(day) {
+    var className = '';
+    if (FlowRouter.getParam('date') == day) {
+      className = 'active'
+    }
+    var output = Outputs.findOne({date:day});
+    console.log(output);
+    if (output) {
+      className = className+' hasContent';
+    }
+    return className;
   },
   connected() {
     if (showConnectionIssue.get()) {
