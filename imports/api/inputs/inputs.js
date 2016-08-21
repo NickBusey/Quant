@@ -43,7 +43,8 @@ Inputs.schema = new SimpleSchema({
   },
   count: {
     type: Number,
-    decimal: true
+    decimal: true,
+    optional: true
   },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id },
 });
