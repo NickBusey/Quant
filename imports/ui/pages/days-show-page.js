@@ -41,7 +41,11 @@ Template.Days_show_page.helpers({
     const instance = Template.instance();
     const inputs = Inputs.find({});
     const date = FlowRouter.getParam('date');
-    const weight = Outputs.findOne({date:date}).weight;
+    var output = Outputs.findOne({date:date});
+    var weight = 0;
+    if (output != undefined) {
+      weight = output.weight;      
+    }
     return {
       inputsReady: instance.subscriptionsReady(),
       inputs,
